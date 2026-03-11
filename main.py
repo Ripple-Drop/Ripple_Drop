@@ -1,6 +1,7 @@
-def main():
-    print("Hello from ripple-drop!")
+from fastapi import FastAPI
 
+app = FastAPI()
 
-if __name__ == "__main__":
-    main()
+@app.get("/")
+def test_route():
+    return {"message": "Successfully connected to the FastAPI application"}

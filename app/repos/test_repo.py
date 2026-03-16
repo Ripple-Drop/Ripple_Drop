@@ -1,3 +1,5 @@
+# 테스트 ORM 모델. 실제 프로젝트에서는 삭제.
+
 from sqlalchemy.orm import Session
 from app.models.test import Test
 

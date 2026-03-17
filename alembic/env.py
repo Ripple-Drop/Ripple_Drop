@@ -1,13 +1,9 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
-
 from app.core.config import settings
 from app.db.base import Base
-import app.models  # 모델을 임포트하여 Alembic이 인식할 수 있도록 함
+from sqlalchemy import engine_from_config, pool
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

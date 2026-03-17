@@ -1,9 +1,6 @@
-from fastapi import FastAPI
-from app.db.session import engine
-from app.db.base import Base
-from app.models import Test
-from app.repos.test_repo import get_or_create_test
 from app.api.deps import get_db
+from app.repos.test_repo import get_or_create_test
+from fastapi import FastAPI
 
 app = FastAPI()
 

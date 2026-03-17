@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
     # DB 설정
     DATABASE: str
@@ -20,4 +21,4 @@ class Settings(BaseSettings):
         case_sensitive=True # 환경 변수 이름 대소문자 구분 여부 설정
         )
 
-settings = Settings()
+settings: Settings = Settings()

@@ -1,5 +1,6 @@
 from app.db.session import SessionLocal
 
+
 # 데이터베이스 세션을 생성하는 의존성 함수
 def get_db():
     db = SessionLocal()  # 세션 생성

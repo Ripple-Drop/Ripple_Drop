@@ -13,5 +13,6 @@ app = FastAPI()
 
 @app.get("/")
 # 테스트 ORM 모델. 실제 프로젝트에서는 삭제.
-def test_route():
-    return get_or_create_test(db=next(get_db()), message="Successfully connected to the database")
+def test_route() -> dict[str, str]:
+    test = get_or_create_test(db=next(get_db()), message="Successfully connected to the database")
+    return {"message": test.message}

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.models.test import Test
 
 
-def get_or_create_test(db: Session, message: str):
+def get_or_create_test(db: Session, message: str) -> Test:
     test = db.query(Test).filter(Test.message == message).first()
     if not test:
         test = Test(message=message)

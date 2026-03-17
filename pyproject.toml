@@ -121,7 +121,7 @@ filterwarnings = [
   "ignore::DeprecationWarning:pkg_resources",
 ]
 xfail_strict = true # 실패를 예상한 테스트에 @pytest.mark.xfail(reason="응~알고있어~") 를 오버라이딩 해서 pass 시킴
-cache-dir = ".cache/pytest"
+cache_dir = ".cache/pytest"
 
 [tool.coverage.run]
 data_file = ".cache/coverage/.coverage"

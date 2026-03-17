@@ -1,5 +1,4 @@
 from app.api.deps import get_db
-from app.repos.test_repo import get_or_create_test
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -14,5 +13,4 @@ app = FastAPI()
 @app.get("/")
 # 테스트 ORM 모델. 실제 프로젝트에서는 삭제.
 def test_route() -> dict[str, str]:
-    test = get_or_create_test(db=next(get_db()), message="Successfully connected to the database")
-    return {"message": test.message}
+    return {"message": "Hello, World!"}

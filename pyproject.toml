@@ -26,11 +26,11 @@ target-version = "py314"
 line-length = 100
 src = ["app", "tests"]
 extend-exclude = ["alembic/versions"]
-cache-dir = [".cache"]
+cache_dir = ".cache/ruff"
 
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF", "S"]
 ignore = []
 fixable = ["ALL"]
 unfixable = []
@@ -44,8 +44,8 @@ preview = false
 
 [tool.ruff.format]
 quote-style = "double"
-jindent-style = "space"
-skip-magic-tralling-comma = false
+indent-style = "space"
+skip-magic-trailing-comma = false
 line-ending = "auto"
 docstring-code-format = true
 
@@ -58,7 +58,7 @@ files = ["app", "tests"] # 검사할 대상
 exclude = ["alembic/versions/"] # 제외 대상
 namespace_packages = true 
 explicit_package_bases = true # import 해석 꼬임이 줄어듦
-cache-dir = [".cache"]
+cache-dir = ".cache/mypy"
 
 # 경고 조정
 warn_return_any = true # 반환 타입이 Any일 때 경고
@@ -91,10 +91,10 @@ disallow_untyped_defs = false
 
 
 [tool.pytest.ini_options]
-minversion = "8.0"
+minversion = "9.0"
 addopts = """
 -ra
- -q
+-q
 --strict-markers
 --strict-config
 --maxfail=1
@@ -116,9 +116,10 @@ filterwarnings = [
   "ignore::DeprecationWarning:pkg_resources",
 ]
 xfail_strict = true # 실패를 예상한 테스트에 @pytest.mark.xfail(reason="응~알고있어~") 를 오버라이딩 해서 pass 시킴
-
+cache_dir = ".cache/pytest"
 
 [tool.coverage.run]
+data_file = ".cache/coverage/.coverage"
 branch = true
 source = ["app"]
 omit = [
@@ -140,13 +141,13 @@ exclude_lines = [
 ] # 제외할 코드 패턴
 
 [tool.coverage.html]
-directory = "htmlcov"
+directory = ".cache/coverage/htmlcov"
 
 [tool.coverage.xml]
-output = "coverage.xml"
+output = ".cache/coverage/coverage.xml"
 
 [tool.coverage.json]
-output = "coverage.json"
+output = ".cache/coverage/coverage.json"
 
 [tool.coverage.lcov]
-output = "coverage.lcov"
+output = ".cache/coverage/coverage.lcov"

@@ -7,7 +7,7 @@ from app.db.base import Base
 
 
 class Test(Base):
-    __tablename__="test"
+    __tablename__ = "test"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     message: Mapped[str] = mapped_column(String(255))

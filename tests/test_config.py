@@ -14,7 +14,7 @@ def test_settings_database_url() -> None:
         DATABASE_NAME="mydb",
     )
 
-    assert settings.DATABASE_URL == "mysql+pymysql://user:pass@localhost:3306/mydb"
+    assert settings.DATABASE_URL == "mysql+pymysql://user:test_password@localhost:3306/mydb"
 
 
 def test_global_settings_can_be_reloaded_from_env(monkeypatch: MonkeyPatch) -> None:
@@ -22,7 +22,7 @@ def test_global_settings_can_be_reloaded_from_env(monkeypatch: MonkeyPatch) -> N
     monkeypatch.setenv("DATABASE_HOST", "127.0.0.1")
     monkeypatch.setenv("DATABASE_PORT", "3307")
     monkeypatch.setenv("DATABASE_USER", "tester")
-    monkeypatch.setenv("DATABASE_PASSWORD", "secret")
+    monkeypatch.setenv("DATABASE_PASSWORD", "test_password")
     monkeypatch.setenv("DATABASE_NAME", "ripple")
 
     import app.core.config as config_module
@@ -35,4 +35,4 @@ def test_global_settings_can_be_reloaded_from_env(monkeypatch: MonkeyPatch) -> N
     assert reloaded.settings.DATABASE_USER == "tester"
     assert reloaded.settings.DATABASE_PASSWORD == "test_password"  # noqa: S105
     assert reloaded.settings.DATABASE_NAME == "ripple"
-    assert reloaded.settings.DATABASE_URL == "mysql+pymysql://tester:secret@127.0.0.1:3307/ripple"
+    assert reloaded.settings.DATABASE_URL == "mysql+pymysql://tester:test_password@127.0.0.1:3307/ripple"

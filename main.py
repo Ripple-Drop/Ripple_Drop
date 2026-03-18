@@ -1,4 +1,3 @@
-from app.api.deps import get_db
 from fastapi import FastAPI
 
 app = FastAPI()

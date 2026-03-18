@@ -1,6 +1,7 @@
 import importlib
 
 from app.core.config import Settings
+from pytest import MonkeyPatch
 
 
 def test_settings_database_url() -> None:
@@ -9,17 +10,14 @@ def test_settings_database_url() -> None:
         DATABASE_HOST="localhost",
         DATABASE_PORT=3306,
         DATABASE_USER="user",
-        DATABASE_PASSWORD="test_password", # noqa: S106
+        DATABASE_PASSWORD="test_password",  # noqa: S106
         DATABASE_NAME="mydb",
     )
 
-    assert (
-        settings.DATABASE_URL
-        == "mysql+pymysql://user:pass@localhost:3306/mydb"
-    )
+    assert settings.DATABASE_URL == "mysql+pymysql://user:pass@localhost:3306/mydb"
 
 
-def test_global_settings_can_be_reloaded_from_env(monkeypatch) -> None:
+def test_global_settings_can_be_reloaded_from_env(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setenv("DATABASE", "mysql+pymysql")
     monkeypatch.setenv("DATABASE_HOST", "127.0.0.1")
     monkeypatch.setenv("DATABASE_PORT", "3307")
@@ -35,9 +33,6 @@ def test_global_settings_can_be_reloaded_from_env(monkeypatch) -> None:
     assert reloaded.settings.DATABASE_HOST == "127.0.0.1"
     assert reloaded.settings.DATABASE_PORT == 3307
     assert reloaded.settings.DATABASE_USER == "tester"
-    assert reloaded.settings.DATABASE_PASSWORD == "test_password" # noqa: S105
+    assert reloaded.settings.DATABASE_PASSWORD == "test_password"  # noqa: S105
     assert reloaded.settings.DATABASE_NAME == "ripple"
-    assert (
-        reloaded.settings.DATABASE_URL
-        == "mysql+pymysql://tester:secret@127.0.0.1:3307/ripple"
-    )
+    assert reloaded.settings.DATABASE_URL == "mysql+pymysql://tester:secret@127.0.0.1:3307/ripple"

@@ -2,6 +2,7 @@ from collections.abc import Iterator
 from contextlib import suppress
 
 from app.api.deps import get_db
+from pytest import MonkeyPatch
 
 
 class DummySession:
@@ -12,7 +13,7 @@ class DummySession:
         self.closed = True
 
 
-def test_get_db_yields_session_and_closes(monkeypatch) -> None:
+def test_get_db_yields_session_and_closes(monkeypatch: MonkeyPatch) -> None:
     dummy = DummySession()
 
     monkeypatch.setattr("app.api.deps.SessionLocal", lambda: dummy)

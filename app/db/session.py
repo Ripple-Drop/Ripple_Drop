@@ -1,13 +1,13 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import get_settings
 
-settings = get_settings()
 
 # SQLAlchemy 설정
-DATABASE_URL = settings.DATABASE_URL
+def get_engine():
+    settings = get_settings()
+    return create_engine(settings.DATABASE_URL, echo=True)  # echo=True는 SQL 쿼리를 로그로 출력.
 
-engine = create_engine(DATABASE_URL, echo=True)  # echo=True는 SQL 쿼리를 로그로 출력.
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)  # 세션 클래스 생성
+def get_session_local() -> sessionmaker[Session]:
+    return sessionmaker(autocommit=False, autoflush=False, bind=get_engine())  # 세션 클래스 생성

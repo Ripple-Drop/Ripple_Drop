@@ -1,5 +1,6 @@
-from collections.abc import Iterator
-from contextlib import suppress
+import contextlib
+from collections.abc import Generator
+from typing import Any
 
 from app.api.deps import get_db
 from pytest import MonkeyPatch
@@ -14,17 +15,19 @@ class DummySession:
 
 
 def test_get_db_yields_session_and_closes(monkeypatch: MonkeyPatch) -> None:
-    dummy = DummySession()
+    dummy_session = DummySession()
 
-    monkeypatch.setattr("app.api.deps.SessionLocal", lambda: dummy)
+    def fake_session_local() -> Any:
+        return lambda: dummy_session
 
-    gen = get_db()
+    monkeypatch.setattr("app.api.deps.get_session_local", fake_session_local)
 
-    assert isinstance(gen, Iterator)
+    generator: Generator[DummySession] = get_db()
+    db = next(generator)
 
-    session = next(gen)
-    assert session is dummy
-    assert dummy.closed is False
+    assert db is dummy_session
 
-    with suppress(StopIteration):
-        next(gen)
+    with contextlib.suppress(StopIteration):
+        next(generator)
+
+    assert dummy_session.closed is True

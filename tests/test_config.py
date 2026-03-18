@@ -35,7 +35,7 @@ def test_global_settings_can_be_reloaded_from_env(monkeypatch) -> None:
     assert reloaded.settings.DATABASE_HOST == "127.0.0.1"
     assert reloaded.settings.DATABASE_PORT == 3307
     assert reloaded.settings.DATABASE_USER == "tester"
-    assert reloaded.settings.DATABASE_PASSWORD == "secret"
+    assert reloaded.settings.DATABASE_PASSWORD == "test_password" # noqa: S105
     assert reloaded.settings.DATABASE_NAME == "ripple"
     assert (
         reloaded.settings.DATABASE_URL

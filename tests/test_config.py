@@ -29,13 +29,16 @@ def test_global_settings_can_be_reloaded_from_env(monkeypatch: MonkeyPatch) -> N
 
     reloaded = importlib.reload(config_module)
 
-    assert reloaded.settings.DATABASE == "mysql+pymysql"
-    assert reloaded.settings.DATABASE_HOST == "127.0.0.1"
-    assert reloaded.settings.DATABASE_PORT == 3307
-    assert reloaded.settings.DATABASE_USER == "tester"
-    assert reloaded.settings.DATABASE_PASSWORD == "test_password"  # noqa: S105
-    assert reloaded.settings.DATABASE_NAME == "ripple"
+    reloaded.get_settings.cache_clear()
+    settings = reloaded.get_settings()
+
+    assert settings.DATABASE == "mysql+pymysql"
+    assert settings.DATABASE_HOST == "127.0.0.1"
+    assert settings.DATABASE_PORT == 3307
+    assert settings.DATABASE_USER == "tester"
+    assert settings.DATABASE_PASSWORD == "test_password"  # noqa: S105
+    assert settings.DATABASE_NAME == "ripple"
     assert (
-        reloaded.settings.DATABASE_URL
+        settings.DATABASE_URL
         == "mysql+pymysql://tester:test_password@127.0.0.1:3307/ripple"
     )

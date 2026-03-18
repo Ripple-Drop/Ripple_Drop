@@ -23,8 +23,10 @@ class Settings(BaseSettings):
         case_sensitive=True,  # 환경 변수 이름 대소문자 구분 여부 설정
     )
 
+
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    return Settings()  # type: ignore[call-arg]
 
-settings = get_settings()  # type: ignore[call-arg]
+
+settings: Settings = get_settings()

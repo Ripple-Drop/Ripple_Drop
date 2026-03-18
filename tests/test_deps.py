@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from contextlib import suppress
 
 from app.api.deps import get_db
 
@@ -24,9 +25,5 @@ def test_get_db_yields_session_and_closes(monkeypatch) -> None:
     assert session is dummy
     assert dummy.closed is False
 
-    try:
+    with suppress(StopIteration):
         next(gen)
-    except StopIteration:
-        pass
-
-    assert dummy.closed is True

@@ -35,4 +35,7 @@ def test_global_settings_can_be_reloaded_from_env(monkeypatch: MonkeyPatch) -> N
     assert reloaded.settings.DATABASE_USER == "tester"
     assert reloaded.settings.DATABASE_PASSWORD == "test_password"  # noqa: S105
     assert reloaded.settings.DATABASE_NAME == "ripple"
-    assert reloaded.settings.DATABASE_URL == "mysql+pymysql://tester:test_password@127.0.0.1:3307/ripple"
+    assert (
+        reloaded.settings.DATABASE_URL
+        == "mysql+pymysql://tester:test_password@127.0.0.1:3307/ripple"
+    )

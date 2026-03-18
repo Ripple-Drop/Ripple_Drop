@@ -9,7 +9,7 @@ def test_settings_database_url() -> None:
         DATABASE_HOST="localhost",
         DATABASE_PORT=3306,
         DATABASE_USER="user",
-        DATABASE_PASSWORD="pass",
+        DATABASE_PASSWORD="test_password", # noqa: S106
         DATABASE_NAME="mydb",
     )
 

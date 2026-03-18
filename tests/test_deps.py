@@ -1,5 +1,4 @@
 import contextlib
-from collections.abc import Generator
 from typing import Any
 
 from app.api.deps import get_db
@@ -22,7 +21,7 @@ def test_get_db_yields_session_and_closes(monkeypatch: MonkeyPatch) -> None:
 
     monkeypatch.setattr("app.api.deps.get_session_local", fake_session_local)
 
-    generator: Generator[DummySession] = get_db()
+    generator = get_db()
     db = next(generator)
 
     assert db is dummy_session

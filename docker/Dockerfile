@@ -3,7 +3,7 @@ FROM python:3.14-slim
 # 빌드/런타임에 필요한 시스템 패키지
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	curl \
-	&& rm -rf /var/lib/apt/list/*
+	&& rm -rf /var/lib/apt/lists/*
 
 # 도커상의 작업 디렉토리 설정
 WORKDIR /app
@@ -26,3 +26,4 @@ EXPOSE 8000
 
 # 애플리케이션 실행 명령
 CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+

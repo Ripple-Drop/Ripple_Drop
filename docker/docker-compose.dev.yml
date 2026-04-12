@@ -34,5 +34,16 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
+  redis:
+    container_name: redis
+    image: redis:8.0
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+
 volumes:
   db_data:
+  redis-data:

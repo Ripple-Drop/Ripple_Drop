@@ -5,7 +5,7 @@ from sqlalchemy import Column, DateTime, Integer, String
 from app.db.base import Base
 
 
-class DBUser(Base):
+class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)

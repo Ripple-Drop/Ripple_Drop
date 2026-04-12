@@ -12,4 +12,4 @@ app = FastAPI()
 @app.get("/")
 # 테스트 ORM 모델. 실제 프로젝트에서는 삭제.
 def test_route() -> dict[str, str]:
-    return {"message": "Hello, World!"}
+    return {"context": "여기는 임시 메인 페이지삼"}

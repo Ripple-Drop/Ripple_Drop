@@ -6,7 +6,7 @@ from app.models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-TEST_DB_URL = "sqlite:///./test.db"
+TEST_DB_URL = "sqlite:///./:memory:"
 
 engine = create_engine(TEST_DB_URL)
 TestingSessionLocal = sessionmaker(bind=engine)

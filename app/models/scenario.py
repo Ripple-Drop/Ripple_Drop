@@ -28,3 +28,8 @@ class Scenario(Base):
         back_populates="scenario",
         cascade="all, delete-orphan",
     )
+    evaluations = relationship(
+        "Evaluation",
+        back_populates="scenario",
+        cascade="all, delete-orphan",
+    )

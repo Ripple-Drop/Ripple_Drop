@@ -11,9 +11,13 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    email = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True, index=True)
     total_score = Column(Integer, nullable=False, default=0)
     current_level = Column(Integer, nullable=False, default=1)
-    created_at = Column(DateTime, nullable=False, default=lambda: datetime.now(UTC))
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(UTC))
 
-    scenarios = relationship("Scenario", back_populates="user", cascade="all, delete-orphan")
+    scenario_sessions = relationship(
+        "ScenarioSession",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )

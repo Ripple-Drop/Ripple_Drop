@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.db.base import Base
-from app.models.scenario import Scenario
+from app.models.scenario import ScenarioSession
 from app.models.user import User
 
 TEST_DB_URL = "sqlite:///:memory:"
@@ -26,23 +26,26 @@ def db_session():
         session.close()
 
 
-def test_scenario_defaults_and_user_relationship(db_session):
+def test_scenario_session_defaults_and_user_relationship(db_session):
     user = User(name="tester", email="tester@example.com")
     db_session.add(user)
     db_session.commit()
     db_session.refresh(user)
 
-    scenario = Scenario(user_id=user.id, scenario_id="airport-smalltalk")
-    db_session.add(scenario)
+    scenario_session = ScenarioSession(
+        user_id=user.id,
+        scenario_id="airport-smalltalk",
+    )
+    db_session.add(scenario_session)
     db_session.commit()
-    db_session.refresh(scenario)
+    db_session.refresh(scenario_session)
 
-    queried_scenario = db_session.query(Scenario).filter_by(scenario_id="airport-smalltalk").first()
+    queried_session = db_session.query(ScenarioSession).filter_by(scenario_id="airport-smalltalk").first()
 
-    assert queried_scenario is not None
-    assert queried_scenario.stage_level == 0
-    assert queried_scenario.total_score == 0
-    assert queried_scenario.success is False
-    assert isinstance(queried_scenario.started_at, datetime)
-    assert queried_scenario.ended_at is None
-    assert queried_scenario.user.id == user.id
+    assert queried_session is not None
+    assert queried_session.stage_level == 0
+    assert queried_session.total_score == 0
+    assert queried_session.success is False
+    assert isinstance(queried_session.started_at, datetime)
+    assert queried_session.ended_at is None
+    assert queried_session.user.id == user.id

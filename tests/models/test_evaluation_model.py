@@ -2,11 +2,12 @@ from datetime import datetime
 
 import pytest
 from sqlalchemy import create_engine
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
 
 from app.db.base import Base
 from app.models.evaluation import Evaluation
-from app.models.scenario import Scenario
+from app.models.scenario import ScenarioSession
 from app.models.user import User
 
 TEST_DB_URL = "sqlite:///:memory:"
@@ -27,23 +28,23 @@ def db_session():
         session.close()
 
 
-def test_evaluation_defaults_and_scenario_relationship(db_session):
+def test_evaluation_defaults_and_session_relationship(db_session):
     user = User(name="tester", email="tester@example.com")
     db_session.add(user)
     db_session.commit()
     db_session.refresh(user)
 
-    scenario = Scenario(user_id=user.id, scenario_id="airport-smalltalk")
-    db_session.add(scenario)
+    scenario_session = ScenarioSession(user_id=user.id, scenario_id="airport-smalltalk")
+    db_session.add(scenario_session)
     db_session.commit()
-    db_session.refresh(scenario)
+    db_session.refresh(scenario_session)
 
-    evaluation = Evaluation(scenario_id=scenario.id)
+    evaluation = Evaluation(session_id=scenario_session.id)
     db_session.add(evaluation)
     db_session.commit()
     db_session.refresh(evaluation)
 
-    queried_evaluation = db_session.query(Evaluation).filter_by(scenario_id=scenario.id).first()
+    queried_evaluation = db_session.query(Evaluation).filter_by(session_id=scenario_session.id).first()
 
     assert queried_evaluation is not None
     assert queried_evaluation.fluency_score == 0
@@ -53,4 +54,26 @@ def test_evaluation_defaults_and_scenario_relationship(db_session):
     assert queried_evaluation.total_score == 0
     assert queried_evaluation.feedback == ""
     assert isinstance(queried_evaluation.created_at, datetime)
-    assert queried_evaluation.scenario.id == scenario.id
+    assert queried_evaluation.session.id == scenario_session.id
+
+
+def test_evaluation_is_one_to_one_per_session(db_session):
+    user = User(name="tester", email="tester@example.com")
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+
+    scenario_session = ScenarioSession(user_id=user.id, scenario_id="airport-smalltalk")
+    db_session.add(scenario_session)
+    db_session.commit()
+    db_session.refresh(scenario_session)
+
+    first_evaluation = Evaluation(session_id=scenario_session.id)
+    second_evaluation = Evaluation(session_id=scenario_session.id)
+
+    db_session.add(first_evaluation)
+    db_session.commit()
+
+    db_session.add(second_evaluation)
+    with pytest.raises(IntegrityError):
+        db_session.commit()

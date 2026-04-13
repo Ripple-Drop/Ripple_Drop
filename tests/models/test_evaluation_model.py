@@ -1,14 +1,13 @@
 from datetime import datetime
 
 import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import sessionmaker
-
 from app.db.base import Base
 from app.models.evaluation import Evaluation
 from app.models.scenario import ScenarioSession
 from app.models.user import User
+from sqlalchemy import create_engine
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
 
 TEST_DB_URL = "sqlite:///:memory:"
 
@@ -44,7 +43,9 @@ def test_evaluation_defaults_and_session_relationship(db_session):
     db_session.commit()
     db_session.refresh(evaluation)
 
-    queried_evaluation = db_session.query(Evaluation).filter_by(session_id=scenario_session.id).first()
+    queried_evaluation = (
+        db_session.query(Evaluation).filter_by(session_id=scenario_session.id).first()
+    )
 
     assert queried_evaluation is not None
     assert queried_evaluation.fluency_score == 0

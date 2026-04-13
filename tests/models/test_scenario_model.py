@@ -1,12 +1,11 @@
 from datetime import datetime
 
 import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
 from app.db.base import Base
 from app.models.scenario import ScenarioSession
 from app.models.user import User
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 TEST_DB_URL = "sqlite:///:memory:"
 
@@ -40,7 +39,9 @@ def test_scenario_session_defaults_and_user_relationship(db_session):
     db_session.commit()
     db_session.refresh(scenario_session)
 
-    queried_session = db_session.query(ScenarioSession).filter_by(scenario_id="airport-smalltalk").first()
+    queried_session = (
+        db_session.query(ScenarioSession).filter_by(scenario_id="airport-smalltalk").first()
+    )
 
     assert queried_session is not None
     assert queried_session.stage_level == 0

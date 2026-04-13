@@ -1,12 +1,11 @@
 from datetime import datetime
 
 import pytest
+from app.db.base import Base
+from app.models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
-
-from app.db.base import Base
-from app.models.user import User
 
 TEST_DB_URL = "sqlite:///:memory:"
 

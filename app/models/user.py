@@ -12,5 +12,5 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, nullable=False)
     total_score = Column(Integer, nullable=False, default=0)
-    current_level = Column(Integer, nullable=False, default=0)
+    current_level = Column(Integer, nullable=False, default=1)
     created_at = Column(DateTime, nullable=False, default=lambda: datetime.now(UTC))

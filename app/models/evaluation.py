@@ -10,7 +10,13 @@ class Evaluation(Base):
     __tablename__ = "evaluations"
 
     id = Column(Integer, primary_key=True)
-    scenario_id = Column(Integer, ForeignKey("scenarios.id"), nullable=False, index=True)
+    session_id = Column(
+        Integer,
+        ForeignKey("scenario_sessions.id"),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
     fluency_score = Column(Integer, nullable=False, default=0)
     relevance_score = Column(Integer, nullable=False, default=0)
     continuity_score = Column(Integer, nullable=False, default=0)
@@ -23,4 +29,4 @@ class Evaluation(Base):
         default=lambda: datetime.now(UTC),
     )
 
-    scenario = relationship("Scenario", back_populates="evaluations")
+    session = relationship("ScenarioSession", back_populates="evaluation")

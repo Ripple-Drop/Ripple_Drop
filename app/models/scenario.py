@@ -6,12 +6,12 @@ from sqlalchemy.orm import relationship
 from app.db.base import Base
 
 
-class Scenario(Base):
-    __tablename__ = "scenarios"
+class ScenarioSession(Base):
+    __tablename__ = "scenario_sessions"
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
-    scenario_id = Column(String(100), nullable=False)
+    scenario_id = Column(String(100), nullable=False, index=True)
     stage_level = Column(Integer, nullable=False, default=0)
     started_at = Column(
         DateTime(timezone=True),
@@ -22,14 +22,15 @@ class Scenario(Base):
     total_score = Column(Integer, nullable=False, default=0)
     success = Column(Boolean, nullable=False, default=False)
 
-    user = relationship("User", back_populates="scenarios")
+    user = relationship("User", back_populates="scenario_sessions")
     message_logs = relationship(
         "MessageLog",
-        back_populates="scenario",
+        back_populates="session",
         cascade="all, delete-orphan",
     )
-    evaluations = relationship(
+    evaluation = relationship(
         "Evaluation",
-        back_populates="scenario",
+        back_populates="session",
         cascade="all, delete-orphan",
+        uselist=False,
     )

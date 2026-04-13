@@ -23,3 +23,8 @@ class Scenario(Base):
     success = Column(Boolean, nullable=False, default=False)
 
     user = relationship("User", back_populates="scenarios")
+    message_logs = relationship(
+        "MessageLog",
+        back_populates="scenario",
+        cascade="all, delete-orphan",
+    )

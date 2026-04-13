@@ -2,7 +2,7 @@
 
 from app.models.evaluation import Evaluation
 from app.models.messagelog import MessageLog
-from app.models.scenario import Scenario
+from app.models.scenario import ScenarioSession
 from app.models.user import User
 
-__all__ = ["Evaluation", "MessageLog", "Scenario", "User"]
+__all__ = ["Evaluation", "MessageLog", "ScenarioSession", "User"]

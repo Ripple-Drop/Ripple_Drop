@@ -1,7 +1,6 @@
 import json
 
 import pytest
-
 from app.services import (
     ScenarioLoader,
     ScenarioNotFoundError,

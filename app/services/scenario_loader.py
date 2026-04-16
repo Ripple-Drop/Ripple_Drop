@@ -21,8 +21,16 @@ class ScenarioValidationError(ScenarioLoaderError):
 
 
 class ScenarioLoader:
+    scenario_dir: Path
+
     def __init__(self, scenario_dir: Path | None = None) -> None:
-        self.scenario_dir = scenario_dir or get_settings().SCENARIO_DIR
+        if scenario_dir is None:
+            settings_scenario_dir = get_settings().SCENARIO_DIR
+            if settings_scenario_dir is None:
+                raise ScenarioValidationError("SCENARIO_DIR is not configured")
+            self.scenario_dir = settings_scenario_dir
+        else:
+            self.scenario_dir = scenario_dir
 
     def list_scenarios(self) -> list[ScenarioDefinition]:
         return [self._load(path) for path in sorted(self.scenario_dir.glob("*.json"))]

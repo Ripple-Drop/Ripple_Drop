@@ -23,10 +23,11 @@ class Settings(BaseSettings):
     @property
     def DATABASE_URL(self) -> str:
         return f"{self.DATABASE}://{self.DATABASE_USER}:{self.DATABASE_PASSWORD}@{self.DATABASE_HOST}:{self.DATABASE_PORT}/{self.DATABASE_NAME}"
+
     # 기타 설정 추가 가능
     model_config = SettingsConfigDict(
-        env_file="envs/.env.dev", # 환경 변수 파일 경로 설정
-        env_file_encoding="utf-8", # 환경 변수 파일 인코딩 설정
+        env_file="envs/.env.dev",  # 환경 변수 파일 경로 설정
+        env_file_encoding="utf-8",  # 환경 변수 파일 인코딩 설정
         case_sensitive=True,  # 환경 변수 이름 대소문자 구분 여부 설정
     )
 

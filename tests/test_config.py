@@ -1,4 +1,5 @@
 import importlib
+from pathlib import Path
 
 from app.core.config import Settings
 from pytest import MonkeyPatch
@@ -15,6 +16,21 @@ def test_settings_database_url() -> None:
     )
 
     assert settings.DATABASE_URL == "mysql+pymysql://user:test_password@localhost:3306/mydb"
+    assert settings.SCENARIO_DIR == settings.BASE_DIR / "scenarios"
+
+
+def test_settings_scenario_dir_can_be_overridden() -> None:
+    settings = Settings(
+        DATABASE="mysql+pymysql",
+        DATABASE_HOST="localhost",
+        DATABASE_PORT=3306,
+        DATABASE_USER="user",
+        DATABASE_PASSWORD="test_password",  # noqa: S106
+        DATABASE_NAME="mydb",
+        SCENARIO_DIR=Path("custom_scenarios"),
+    )
+
+    assert settings.SCENARIO_DIR == Path("custom_scenarios")
 
 
 def test_global_settings_can_be_reloaded_from_env(monkeypatch: MonkeyPatch) -> None:
@@ -24,6 +40,7 @@ def test_global_settings_can_be_reloaded_from_env(monkeypatch: MonkeyPatch) -> N
     monkeypatch.setenv("DATABASE_USER", "tester")
     monkeypatch.setenv("DATABASE_PASSWORD", "test_password")
     monkeypatch.setenv("DATABASE_NAME", "ripple")
+    monkeypatch.setenv("SCENARIO_DIR", "scenarios_from_env")
 
     import app.core.config as config_module
 
@@ -39,3 +56,4 @@ def test_global_settings_can_be_reloaded_from_env(monkeypatch: MonkeyPatch) -> N
     assert settings.DATABASE_PASSWORD == "test_password"  # noqa: S105
     assert settings.DATABASE_NAME == "ripple"
     assert settings.DATABASE_URL == "mysql+pymysql://tester:test_password@127.0.0.1:3307/ripple"
+    assert settings.SCENARIO_DIR == Path("scenarios_from_env")

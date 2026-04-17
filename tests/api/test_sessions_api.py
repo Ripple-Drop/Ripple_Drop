@@ -1,17 +1,17 @@
 import json
 from collections.abc import Generator
+from pathlib import Path
 
 import pytest
-from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy.pool import StaticPool
-
 from app.api.deps import get_db
 from app.core.config import get_settings
 from app.db.base import Base
 from app.models import ScenarioSession, User
+from fastapi.testclient import TestClient
 from main import app
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.pool import StaticPool
 
 
 @pytest.fixture
@@ -32,7 +32,7 @@ def session_factory() -> Generator[sessionmaker[Session]]:
 
 
 @pytest.fixture
-def scenario_dir(tmp_path) -> Generator:
+def scenario_dir(tmp_path: Path) -> Generator[Path]:
     scenarios_path = tmp_path / "scenarios"
     scenarios_path.mkdir()
     (scenarios_path / "airport-smalltalk.json").write_text(
@@ -55,7 +55,11 @@ def scenario_dir(tmp_path) -> Generator:
 
 
 @pytest.fixture
-def client(session_factory: sessionmaker[Session], scenario_dir, monkeypatch) -> Generator[TestClient]:
+def client(
+    session_factory: sessionmaker[Session],
+    scenario_dir: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> Generator[TestClient]:
     monkeypatch.setenv("SCENARIO_DIR", str(scenario_dir))
     monkeypatch.setenv("DATABASE", "sqlite")
     monkeypatch.setenv("DATABASE_HOST", "localhost")
@@ -81,7 +85,10 @@ def client(session_factory: sessionmaker[Session], scenario_dir, monkeypatch) ->
         get_settings.cache_clear()
 
 
-def test_create_session_success(client: TestClient, session_factory: sessionmaker[Session]):
+def test_create_session_success(
+    client: TestClient,
+    session_factory: sessionmaker[Session],
+) -> None:
     with session_factory() as db:
         user = User(name="tester", email="tester@example.com")
         db.add(user)
@@ -106,7 +113,7 @@ def test_create_session_success(client: TestClient, session_factory: sessionmake
 def test_create_session_returns_404_for_missing_scenario(
     client: TestClient,
     session_factory: sessionmaker[Session],
-):
+) -> None:
     response = client.post(
         "/sessions",
         json={"user_id": 1, "scenario_id": "missing-scenario"},

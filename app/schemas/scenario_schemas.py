@@ -32,3 +32,21 @@ class ScenarioDefinition(BaseModel):
         if not value:
             raise ValueError("value must not be blank")
         return value
+
+
+class ScenarioListItem(BaseModel):
+    id: str
+    title: str
+    description: str
+    difficulty: Literal["easy", "medium", "hard"]
+    time_limit_seconds: int
+
+    @classmethod
+    def from_definition(cls, scenario: ScenarioDefinition) -> "ScenarioListItem":
+        return cls(
+            id=scenario.id,
+            title=scenario.title,
+            description=scenario.description,
+            difficulty=scenario.difficulty,
+            time_limit_seconds=scenario.time_limit_seconds,
+        )

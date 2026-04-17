@@ -42,7 +42,7 @@ class ScenarioListItem(BaseModel):
     time_limit_seconds: int
 
     @classmethod
-    def from_definition(cls, scenario: ScenarioDefinition) -> "ScenarioListItem":
+    def from_definition(cls, scenario: ScenarioDefinition) -> ScenarioListItem:
         return cls(
             id=scenario.id,
             title=scenario.title,

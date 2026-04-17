@@ -1,12 +1,18 @@
-from fastapi.testclient import TestClient
+from typing import Literal
 
 from app.api import scenarios as scenarios_api
 from app.schemas import ScenarioDefinition
 from app.services import ScenarioNotFoundError, ScenarioValidationError
+from fastapi.testclient import TestClient
 from main import app
 
 
-def _build_scenario(*, scenario_id: str, title: str, difficulty: str) -> ScenarioDefinition:
+def _build_scenario(
+    *,
+    scenario_id: str,
+    title: str,
+    difficulty: Literal["easy", "medium", "hard"],
+) -> ScenarioDefinition:
     return ScenarioDefinition(
         id=scenario_id,
         title=title,
@@ -22,7 +28,9 @@ def _build_scenario(*, scenario_id: str, title: str, difficulty: str) -> Scenari
 
 def test_list_scenarios_returns_list_items(monkeypatch):
     scenarios = [
-        _build_scenario(scenario_id="airport-smalltalk", title="Airport Small Talk", difficulty="easy"),
+        _build_scenario(
+            scenario_id="airport-smalltalk", title="Airport Small Talk", difficulty="easy"
+        ),
         _build_scenario(scenario_id="cafe-chat", title="Cafe Chat", difficulty="medium"),
     ]
 

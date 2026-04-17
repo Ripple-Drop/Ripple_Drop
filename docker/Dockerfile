@@ -21,9 +21,9 @@ RUN uv sync --locked --no-dev --no-install-project
 # 애플리케이션 소스 코드 복사
 COPY . .
 
-# 컨테이너가 수신 대기할 포트 노출
-EXPOSE 8000
+# # 컨테이너가 수신 대기할 포트 노출
+# EXPOSE 8000
 
-# 애플리케이션 실행 명령
-CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# # 애플리케이션 실행 명령
+# CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 

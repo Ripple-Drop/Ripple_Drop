@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 
+from app.api import ROUTERS
+
 app = FastAPI()
+
+for router in ROUTERS:
+    app.include_router(router)
 
 # @app.on_event("startup") # FastAPI 이벤트 시스템으로 앱 시작 시 실행할 함수를 정의할 수 있음.
 # def startup_event():

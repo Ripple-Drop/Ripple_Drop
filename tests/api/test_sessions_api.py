@@ -17,7 +17,7 @@ from main import app
 @pytest.fixture
 def session_factory() -> Generator[sessionmaker[Session]]:
     engine = create_engine(
-        "sqlite://",
+        "sqlite:///:memory:",
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )

@@ -25,7 +25,7 @@ class ScenarioDefinition(BaseModel):
         "system_prompt",
         "opening_message",
     )
-    # 띄어쓰기 검증
+    # 빈 문자열 검증
     @classmethod
     def validate_non_empty_text(cls, value: str) -> str:
         value = value.strip()

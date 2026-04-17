@@ -1,3 +1,3 @@
-from app.schemas.scenario_schemas import ScenarioDefinition
+from app.schemas.scenario_schemas import ScenarioDefinition, ScenarioListItem
 
-__all__ = ["ScenarioDefinition"]
+__all__ = ["ScenarioDefinition", "ScenarioListItem"]

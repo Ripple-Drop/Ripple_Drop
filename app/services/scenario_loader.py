@@ -1,10 +1,10 @@
 import json
 import logging
+import os
 from pathlib import Path
 
 from pydantic import ValidationError
 
-from app.core.config import get_settings
 from app.schemas import ScenarioDefinition
 
 
@@ -25,12 +25,16 @@ class ScenarioLoader:
 
     def __init__(self, scenario_dir: Path | None = None) -> None:
         if scenario_dir is None:
-            settings_scenario_dir = get_settings().SCENARIO_DIR
-            if settings_scenario_dir is None:
-                raise ScenarioValidationError("SCENARIO_DIR is not configured")
-            self.scenario_dir = settings_scenario_dir
+            self.scenario_dir = self._resolve_scenario_dir()
         else:
             self.scenario_dir = scenario_dir
+
+    @staticmethod
+    def _resolve_scenario_dir() -> Path:
+        scenario_dir = os.getenv("SCENARIO_DIR")
+        if scenario_dir:
+            return Path(scenario_dir)
+        return Path(__file__).resolve().parents[2] / "scenarios"
 
     def list_scenarios(self) -> list[ScenarioDefinition]:
         return [self._load(path) for path in sorted(self.scenario_dir.glob("*.json"))]

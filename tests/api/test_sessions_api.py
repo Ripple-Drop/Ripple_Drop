@@ -57,6 +57,11 @@ def scenario_dir(tmp_path) -> Generator:
 @pytest.fixture
 def client(session_factory: sessionmaker[Session], scenario_dir, monkeypatch) -> Generator[TestClient]:
     monkeypatch.setenv("SCENARIO_DIR", str(scenario_dir))
+    monkeypatch.setenv("DATABASE", "sqlite")
+    monkeypatch.setenv("DATABASE_HOST", "localhost")
+    monkeypatch.setenv("DATABASE_USER", "tester")
+    monkeypatch.setenv("DATABASE_PASSWORD", "tester")
+    monkeypatch.setenv("DATABASE_NAME", "test")
     get_settings.cache_clear()
 
     def override_get_db() -> Generator[Session]:

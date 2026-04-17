@@ -1,16 +1,24 @@
 from functools import lru_cache
+from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    # DB 설정
+    BASE_DIR: Path = Field(default_factory=lambda: Path(__file__).resolve().parents[2])
+
     DATABASE: str
     DATABASE_HOST: str
     DATABASE_PORT: int = 3306
     DATABASE_USER: str
     DATABASE_PASSWORD: str
     DATABASE_NAME: str
+    SCENARIO_DIR: Path | None = None
+
+    def model_post_init(self, __context: object) -> None:
+        if self.SCENARIO_DIR is None:
+            self.SCENARIO_DIR = self.BASE_DIR / "scenarios"
 
     @property
     def DATABASE_URL(self) -> str:

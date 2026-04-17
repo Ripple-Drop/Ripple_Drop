@@ -1,14 +1,13 @@
 import json
 
-from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
-
 from app.api.deps import get_db
+from app.core.config import get_settings
 from app.db.base import Base
 from app.models import ScenarioSession, User
-from app.core.config import get_settings
+from fastapi.testclient import TestClient
 from main import app
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
 def test_create_session_success(tmp_path, monkeypatch):

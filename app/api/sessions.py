@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -43,6 +43,6 @@ def create_session(
     db.refresh(session)
 
     return SessionCreateResponse(
-        session_id=session.id,
-        scenario_id=session.scenario_id,
+        session_id=cast(int, session.id),
+        scenario_id=cast(str, session.scenario_id),
     )
